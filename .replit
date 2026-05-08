@@ -1,0 +1,46 @@
+modules = ["nodejs-24"]
+
+[deployment]
+router = "application"
+deploymentTarget = "autoscale"
+
+[deployment.postBuild]
+args = ["pnpm", "store", "prune"]
+env = { "CI" = "true" }
+
+[workflows]
+
+[agent]
+stack = "PNPM_WORKSPACE"
+expertMode = true
+
+[postMerge]
+path = "scripts/post-merge.sh"
+timeoutMs = 20000
+
+[[ports]]
+localPort = 8080
+externalPort = 8080
+
+[[ports]]
+localPort = 8081
+externalPort = 80
+
+[[ports]]
+localPort = 8082
+externalPort = 3002
+
+[[ports]]
+localPort = 24349
+externalPort = 3000
+
+[[ports]]
+localPort = 24350
+externalPort = 3001
+
+[userenv]
+
+[userenv.shared]
+FIREBASE_PROJECT_ID = "studio-1871371743-58ae3"
+FIREBASE_CLIENT_EMAIL = "firebase-adminsdk-fbsvc@studio-1871371743-58ae3.iam.gserviceaccount.com"
+FIREBASE_STORAGE_BUCKET = "studio-1871371743-58ae3.firebasestorage.app"
